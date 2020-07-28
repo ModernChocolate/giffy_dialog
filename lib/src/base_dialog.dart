@@ -127,26 +127,33 @@ class _BaseGiffyDialogState extends State<BaseGiffyDialog> with TickerProviderSt
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.only(topRight: Radius.circular(widget.cornerRadius), topLeft: Radius.circular(widget.cornerRadius)),
-            child: imageWidget,
+        Container(
+          height: MediaQuery.of(context).size.height * 0.3,
+          child: Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(topRight: Radius.circular(widget.cornerRadius), topLeft: Radius.circular(widget.cornerRadius)),
+              child: imageWidget,
+            ),
           ),
         ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: widget.title,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: widget.description,
-              ),
-              _buildButtonsBar(context)
-            ],
+        Container(
+          height: MediaQuery.of(context).size.height * 0.3,
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: widget.title,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: widget.description,
+                ),
+                Container(height: MediaQuery.of(context).size.height * 0.1, width: MediaQuery.of(context).size.width * 0.8, child: FittedBox(child: _buildButtonsBar(context)))
+              ],
+            ),
           ),
         ),
       ],
@@ -185,10 +192,10 @@ class _BaseGiffyDialogState extends State<BaseGiffyDialog> with TickerProviderSt
   }
 
   Widget _buildButtonsBar(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    final isPortrait = true;
+    return Container(
       child: Row(
-        mainAxisAlignment: !widget.onlyOkButton ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           if (!widget.onlyOkButton) ...[
             RaisedButton(
@@ -202,6 +209,10 @@ class _BaseGiffyDialogState extends State<BaseGiffyDialog> with TickerProviderSt
                   ),
             )
           ],
+          if (!widget.onlyCancelButton)
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.01,
+            ),
           if (!widget.onlyCancelButton) ...[
             RaisedButton(
               color: widget.buttonOkColor,
